@@ -263,7 +263,104 @@ path entirely. Check for this whenever a decision has one branch that
 terminates immediately and another that continues through more boxes:
 don't let the short branch's node sit in the long branch's vertical lane.
 
-## Citation verification — do not skip this
+### Retrofitting a manuscript onto a tool already built from images alone (`dapagliflozin-overdose-protocol`)
+
+Every other tool in this atlas was built once, from whatever source
+existed at build time. `dapagliflozin-overdose-protocol` is the first to
+go through this twice: it shipped on 2026-10-29 from two source images
+alone (no manuscript existed yet), with every reference independently
+located and verified from scratch, and five of its thirteen boxes marked
+`needsAuthor: true` because specific details (a magnesium-monitoring
+rationale, the exact wording of the FDA label's dialysis statement, the
+observation-window duration, an "eating normally" restart criterion)
+could not be traced to a primary source. On 2026-11-14, Dr. Karcıoğlu sent
+the manuscript this figure actually belongs to — at first glance this
+looked like it might be a candidate for a new, 27th tool, until comparing
+the new condensation's box-by-box transcription against this repo's own
+`content.js` line by line showed all 13 labels/subs matching byte-for-byte
+the figure already built. Confusing "a new source document surfaced for
+an existing clinical topic" with "a new tool" is a realistic mistake to
+make here — the fix is the same byte-for-byte label/sub comparison this
+file already prescribes for ordinary fidelity-checking, just run as the
+very first step, before any other work, whenever a manuscript arrives for
+a topic this atlas may already cover.
+
+Once confirmed as the same figure, the correct move is a content revision,
+not a new repo: `label`/`sub` stay untouched (already verified identical),
+`VERIFIED` moves to the new date, every `meaning`/`rationale` is rebuilt
+from the manuscript's own stated reasoning in place of the independently
+reconstructed reasoning it replaces, the `needsAuthor` flags come off
+(the manuscript's own Section 9 states plainly that its overdose-
+management recommendations are largely "reasoned extrapolations from
+pharmacology and limited clinical experience rather than evidence-based
+protocols" — the same gaps the first build had flagged as unverifiable are
+now sourced to the authors' own words instead, which is a real
+improvement even though the numbers themselves still don't exist), and
+the reference list is replaced wholesale under the citation-verification
+exception below rather than kept as the original ~20 independently-
+verified entries — the manuscript's own 74-entry bibliography, already
+carrying its own DOIs, supersedes citations this project had to go and
+find on its own precisely because no manuscript existed at the time.
+
+### Figure-versus-manuscript-text discrepancies, pre-identified by the condensation (`dapagliflozin-overdose-protocol`)
+
+As with `beta-lactam-infusion-protocol`, this manuscript's own condensation
+arrived with its discrepancies already catalogued (Section 4.2, eight
+items) rather than requiring this project to find them by reading the
+figure directly. Six map onto a specific node's `cautions` array in
+`assets/content.js`; two fall outside Figure 1 itself and so are not
+attached to any node:
+
+1. **The `trigger` node** — a separate paediatric-ingestion home-
+   observation pathway described in Section 7.3 is not depicted anywhere
+   in Figure 1; applied literally, the figure would route a toddler who
+   swallowed one tablet through full IV access and laboratory blood draws.
+2. **The `mechanism` node** — the manuscript's own Section 1 calls the
+   Graphical Abstract "Figure 1", while Section 7.3 explicitly captions
+   the decision algorithm (what this page is built around) "Figure 1" —
+   two different things sharing one figure number within the same
+   manuscript. Outside the scope of any clinical caution; noted here only
+   so a future reader of the manuscript isn't confused by it.
+3. **The `initial_assessment` and `workup` nodes** — "airway, breathing,
+   circulation" and "IV access" appear in the figure's Box 2 without
+   matching text in Section 7.3/Table 3; conversely the text adds
+   "laboratory glucose" and "venous **or arterial**" (vs. the figure's
+   "venous" alone) that the figure omits.
+4. **The `d1` node (Diamond 1) — the flagship discrepancy.** The
+   "ketones ≥ 3.0 mmol/L" threshold appears only in the figure and nowhere
+   in the manuscript's own prose or tables (an externally adopted DKA
+   threshold, not this review's own finding), and the figure's "and/or"
+   logic for ketones/anion-gap would treat a non-ketotic high-anion-gap
+   acidosis as sufficient on its own, where Table 3 Step 7 and Section 5.1
+   both describe the syndrome as ketonaemic **and** acidotic together.
+5. **The `ketoacidosis_no` node** — "antiemetics as required" appears in
+   the figure's Box 4B without matching text support, and the box omits
+   an explicit "stop dapagliflozin" instruction that Box 4A (the
+   ketoacidosis branch) states directly, even though Section 5.3/Section 8
+   establish the drug should be suspended during acute illness generally.
+6. **The `elimination` node** — the figure's "activated charcoal is not
+   routinely indicated" omits Table 3 Step 3's explicit conditional
+   exception for a substantial recent ingestion with a protected airway.
+7. **The `observation` node** — "approximately 13 hours" (figure) versus
+   "approximately 12.9 hours" (Section 3.2 and Table 3) for the same
+   terminal half-life — a rounding difference, not a different value.
+8. **Outside Figure 1 entirely — not attached to any node.** Section 3.2
+   gives the pre-operative dapagliflozin-withholding interval as
+   "three-to-four-day", while Section 6.3 and Section 8 both say "three
+   days" (and "preceding 72 hours" for emergency surgery). This is a
+   text-versus-text inconsistency in material Figure 1 never depicts at
+   all (the algorithm this tool renders has no perioperative-management
+   box), so it is recorded here for completeness rather than surfaced as
+   a clinical caution on a node that doesn't exist.
+
+None of these were used to alter a single character of Figure 1's own box
+text — every `label`/`sub` field is transcribed exactly as drawn, per the
+one rule above. Each of items 1, 3, 4, 5, 6 and 7 is instead carried as a
+`cautions` entry on its node, phrased to give both the figure's wording
+and the conflicting manuscript passage side by side, without this project
+silently picking a winner between them.
+
+## Citation verification — do not skip this (default rule — see exception below)
 
 Every reference must be **independently verified** against a real primary
 source (search for and open the actual paper, check the DOI resolves to
@@ -272,7 +369,48 @@ source list at face value, even one supplied by the authors' own
 manuscript — reference lists can and do contain real errors (a wrong DOI
 in a manuscript's own bibliography was caught and corrected against the
 publisher's website in this project; the manuscript's number was simply
-wrong). If the authors' own manuscript is itself the source for an
+wrong).
+
+> **Author-directed exception, granted per-tool — not a standing policy.**
+> Nine tools so far have been built this way, each on its own explicit
+> instruction from Dr. Bozatlı, not as a carried-over default:
+>
+> - `epinephrine-revisited-protocol` (2026) — 57 entries.
+> - `ketamine-indications-protocol` (2026) — 47 entries.
+> - `haloperidol-adjunct-protocol` (2026) — 74 entries.
+> - `geriatric-pain-protocol` (2026) — 52 entries.
+> - `metoclopramide-ondansetron-protocol` (2026) — 105 entries.
+> - `spontaneous-pneumothorax-protocol` (2026) — 80 entries.
+> - `button-battery-protocol` (2026) — 92 entries; 88 carry a manuscript
+>   DOI, 4 link to a cited web page instead, 1 links to its PubMed record.
+> - `beta-lactam-infusion-protocol` (2026) — 77 entries, every one of which
+>   already carried a manuscript-stated DOI.
+> - `dapagliflozin-overdose-protocol` (2026-11-14 revision) — 74 entries,
+>   every one already carrying a manuscript-stated DOI, replacing the
+>   ~20 entries the 2026-10-29 first build had independently verified from
+>   scratch (no manuscript existed at that time — see "Retrofitting a
+>   manuscript onto a tool already built from images alone" above). The
+>   first build's own independent verification is not wasted: it is what
+>   made the byte-for-byte label/sub comparison possible in the first
+>   place, by establishing exactly which figure this tool already was.
+>
+> In all nine cases the manuscript's own reference list is accepted as
+> correct on the author's explicit instruction; every entry in
+> `REFERENCES` is transcribed directly from the manuscript's own
+> bibliography (DOIs as given, not independently re-resolved), and every
+> entry's `kind` field says so plainly ("As cited in the manuscript; not
+> independently re-verified"). **This still does not change the default
+> rule above for any other tool, including future ones.** Each instance is
+> a deliberate, recorded exception for that one build, made at the
+> author's explicit direction for that specific manuscript — not a
+> precedent a builder may apply on its own judgement just because it was
+> used before. A future builder should run the full independent
+> verification pass by default, and only skip it when the author gives
+> this same explicit instruction again, for that specific tool, in that
+> session — recording it in `content.js`'s header comment and in this
+> file exactly as these entries do.
+
+If the authors' own manuscript is itself the source for an
 algorithm and is unpublished, cite it with `url: null` and note "in
 preparation" in `text`/`kind` rather than inventing a fake link. Anything
 you cannot independently verify gets flagged (`needsAuthor`-style) in the

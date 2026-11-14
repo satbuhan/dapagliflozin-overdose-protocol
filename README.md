@@ -53,62 +53,70 @@ dialyse"). This page keeps the original algorithm exactly as authored, and
 attaches the clinical reasoning and literature to each box without
 cluttering the diagram itself.
 
-The algorithm reproduced here is transcribed, box for box, from two
-source images provided by the author team: a mechanism/safety infographic
-and a decision-flowchart for suspected dapagliflozin overdose or acute
-illness. Unlike this atlas's other tools, no underlying manuscript or
-reference list exists behind this figure, so every citation was located
-and independently verified from scratch — a real primary source opened
-and checked, not taken from a secondary summary.
+The algorithm reproduced here is Figure 1 ("Clinical decision algorithm
+for suspected dapagliflozin overdose, or for the acutely unwell patient
+taking an SGLT2 inhibitor") of an unpublished, blinded manuscript — a
+narrative review titled "Dapagliflozin: Safety Analysis and Overdose
+Management" (74-entry bibliography, every entry carrying its own DOI) —
+from a Gemini condensation of the manuscript text, tables and references,
+with Figure 1 supplied separately as an image.
 
 ## Status
 
 This is a working version, built to be tested on both desktop and mobile.
-Five of the thirteen boxes (the mechanism panel, the workup panel, the
-diagnostic decision diamond, the hypoglycaemia/co-ingestant box, and the
-"no ketoacidosis" box) have every substantive claim backed by an
-independently verified citation, with any imperfect match between source
-and claim noted explicitly in that reference's `kind` field rather than
-smoothed over. The remaining boxes are marked `needsAuthor: true` in
-`assets/content.js` because at least one specific detail could not be
-fully verified despite a real search attempt — specifically:
 
-- **Ketoacidosis management box** — the whole bundle is well supported by
-  current consensus guidance (stop the drug, fixed-rate insulin, dextrose
-  from the outset, potassium replacement, treat the precipitant) *except*
-  the instruction to monitor magnesium, which could not be traced to any
-  guideline-level source despite checking the main DKA consensus report,
-  two editions of JBDS guidance, and the SGLT2i-specific ABCD position
-  statement. It is flagged, not invented.
-- **"Do not dialyse" box** — the pharmacokinetic parameters behind it are
-  independently confirmed (91% protein binding directly from the FDA
-  label; the ≈118 L volume-of-distribution figure is real but traces only
-  to a secondary review article, not a primary PK study or either drug
-  label). More importantly, the FDA label does **not** say dialysis has
-  been shown ineffective — it says plainly that removal by haemodialysis
-  "has not been studied." The box's instruction is sound standard
-  toxicology reasoning from those two parameters, but it is reasoning, not
-  a tested or guideline-stated conclusion, and the page says so rather
-  than implying otherwise.
-- **Observation-window box** — the ≈13-hour half-life is directly
-  confirmed, but the specific "12–24 hour" recommended observation period
-  is this algorithm's own clinical judgement, not a published
-  toxicology-guideline figure; the page cites the real-world data that
-  exists (poison-centre follow-up times, a confounded severe-case report)
-  as context rather than as direct support for that exact number.
-- **Disposition box** — "do not restart until clinically stable" is
-  well supported by a UK regulatory safety communication and a national
-  position statement; the added "and eating normally" criterion, specific
-  to SGLT2 inhibitors, could not be traced to the same kind of primary
-  source and is noted as such.
-
-See the `kind` field on each reference in `assets/content.js` for exactly
-what every source does and doesn't support, including several references
-that back a *class-wide* SGLT2-inhibitor finding (a meta-analysis, say)
-rather than a dapagliflozin-specific one — most notably the genital
-mycotic infection figure, where the "~3×" figure as authored matches the
-class-wide literature while dapagliflozin's own trial data show a larger
-effect.
+- **Two builds, same figure:** this tool was first built on 2026-10-29
+  from two source images alone (a mechanism/safety infographic and this
+  decision algorithm), with **no manuscript behind them** — every one of
+  that first build's ~20 references was independently located and
+  verified from scratch, a real primary source opened and checked rather
+  than taken from a secondary summary. On 2026-11-14 the manuscript this
+  figure actually belongs to became available. All 13 box/diamond labels
+  and sub-texts were cross-checked against the new condensation's
+  box-by-box transcription of the figure, byte for byte — all 13 matched,
+  so no label/sub text changed in this revision. Everything below the
+  label/sub level was rebuilt from the manuscript's own stated reasoning.
+- **Reference verification — explicit, author-granted exception (the
+  ninth in this atlas):** asked directly whether to extend the same
+  no-independent-re-verification policy used for
+  `epinephrine-revisited-protocol`, `ketamine-indications-protocol`,
+  `haloperidol-adjunct-protocol`, `geriatric-pain-protocol`,
+  `metoclopramide-ondansetron-protocol`, `spontaneous-pneumothorax-protocol`,
+  `button-battery-protocol` and `beta-lactam-infusion-protocol` to this
+  manuscript's 74-entry bibliography, the author confirmed the same
+  policy again. The reference list below is reproduced directly from the
+  manuscript's own bibliography, every entry already carrying its own
+  DOI, and was **not** independently re-verified against primary sources
+  for this revision — every entry's `kind` field says so plainly.
+- **No more `needsAuthor` flags:** the first build flagged five boxes
+  because at least one specific detail (a magnesium-monitoring rationale,
+  the FDA label's actual "has not been studied" wording on dialysis, the
+  exact observation-window duration, an "eating normally" restart
+  criterion) could not be traced to a primary source despite a real
+  search attempt. The manuscript now explains these the same way its own
+  authors do: Section 9 states plainly that its overdose-management
+  recommendations are largely "reasoned extrapolations from pharmacology
+  and limited clinical experience rather than evidence-based protocols."
+  Those gaps are real and are kept — as clinical cautions sourced to the
+  manuscript's own words, not as unresolved `needsAuthor` flags.
+- **Figure-versus-manuscript-text discrepancies, carried through as
+  clinical cautions rather than silently resolved:** the manuscript's own
+  Section 4.2 identifies eight internal inconsistencies between Figure 1
+  and its own prose/tables before this tool was built from it — most
+  notably, the "ketones ≥ 3.0 mmol/L" diagnostic threshold in Diamond 1
+  appears nowhere in the manuscript text (an externally adopted DKA
+  threshold), an "and/or" ketoacidosis-decision rule in the figure sits
+  against "and" wording in Table 3, the plasma half-life is given as
+  "13 hours" in the figure versus "12.9 hours" in the text, the figure's
+  "activated charcoal is not routinely indicated" omits a text-only
+  conditional exception for substantial recent ingestion with a protected
+  airway, and a separate paediatric-ingestion home-observation pathway
+  described in the text is not depicted in the figure at all. Figure 1's
+  own box text is transcribed exactly as authored in every case; each
+  discrepancy is instead surfaced as a clinical caution on the relevant
+  node, with both figures/claims given and neither silently preferred.
+  The full registry — including two further discrepancies that fall
+  outside Figure 1 itself — is kept in `METHODOLOGY.md`.
 
 ## Disclaimer
 
@@ -149,11 +157,12 @@ python3 -m http.server 8000
 ### Editing content
 
 Open `assets/content.js`. Each entry in `NODES` is one box or decision
-diamond from the algorithm (`meaning`, `rationale`, and `refs` pointing at
+diamond from the algorithm (`meaning`, `rationale`, optional `cautions`
+for figure-versus-manuscript-text discrepancies, and `refs` pointing at
 numbered entries in `REFERENCES`). Add or edit a reference in
 `REFERENCES` and point to it by `id` from any node. Never change a node's
 `label` or `sub` text without the author team's sign-off — those fields
-are the algorithm itself, transcribed from the source images. Two nodes
+are the algorithm itself, transcribed byte-for-byte from Figure 1. Two nodes
 (`mechanism`, `adverse_effects`) are background-information panels, not
 part of the main decision sequence — they are linked in from `trigger`
 with dashed "info" edges, the same mechanism `aortic-dissection-protocol`
